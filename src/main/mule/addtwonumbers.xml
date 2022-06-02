@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e124d12a-3db9-4d30-8e78-27fee9e03b95" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="addtwonumbersFlow" doc:id="dabb0d0b-3b52-482b-a4a3-3a55a51a4c84" >
+		<http:listener doc:name="Listener" doc:id="4f55f4fc-ac78-44dc-9a66-ddff7c079829" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="af9f68fb-bdba-4eb2-8236-4b73734fd995" message="start flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="88060880-0611-4bfd-a3fc-d400e1f9e242" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{  java.util.Scanner;
+public class AddTwoNumbers2 {
+
+    public static void main(String[] args) {
+        
+        int num1, num2, sum;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter First Number: ");
+        num1 = sc.nextInt();
+        
+        System.out.println("Enter Second Number: ");
+        num2 = sc.nextInt();
+        
+        sc.close();
+        sum = num1 + num2;
+        System.out.println("Sum of these numbers: "+sum);
+    }
+}
+}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
